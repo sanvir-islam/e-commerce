@@ -9,6 +9,7 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     otp: { type: String },
     otpExpiry: Date,
+    lastOtpRequest: Date,
     otpAttempts: { type: Number, default: 0 },
     lockedUntil: Date,
     verified: { type: Boolean, default: false },
