@@ -1,14 +1,19 @@
 const transporter = require("../config/mailer");
+const { verificationEmailTemplate } = require("../templates/verificationEmail");
 
 async function sendVerificationMail(email, otp) {
-  await transporter.sendMail({
-    from: "sanvirislam10@gmail.com",
-    to: email,
-    subject: "Verification email from Zenith",
-    html: `<b>u have 2 min <br/> boy ur funcking otp is ${otp}</b>`,
-  });
+  try {
+    await transporter.sendMail({
+      from: "sanvirislam10@gmail.com",
+      to: email,
+      subject: "Verification email from Zenith",
+      html: verificationEmailTemplate(otp),
+    });
 
-  console.log("Message sent to ", email);
+    console.log("Message sent to ", email);
+  } catch (err) {
+    throw new Error("Error in sending mail");
+  }
 }
 
 module.exports = sendVerificationMail;
