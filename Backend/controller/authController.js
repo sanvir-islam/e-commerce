@@ -52,6 +52,7 @@ async function register(req, res) {
       message: "password is required",
     });
   }
+
   try {
     const existUser = await userSchema.findOne({ email });
     if (existUser) {
@@ -68,7 +69,6 @@ async function register(req, res) {
     });
 
     await user.save();
-
     res.status(201).json({
       message: "Registration successfull",
       data: user,
@@ -211,10 +211,10 @@ async function verifyEmail(req, res) {
       { email },
       {
         $set: {
-          otpAttempts: 0,
           verified: true,
+          otpAttempts: 0,
         },
-        $unset: { otp: "", otpExpiry: "", lockedUntil: "" },
+        $unset: { otp: "", otpExpiry: "", lockedUntil: "", lastOtpRequest: "" },
       }
     );
 
