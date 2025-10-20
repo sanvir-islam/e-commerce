@@ -1,13 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // limiter - set req per ip in window time
-const {
-  registerController,
-  requestVerificationController,
-  loginController,
-  verifyEmailController,
-  logoutController,
-} = require("../../controller/authController");
+const { register, requestVerification, login, verifyEmail, logout } = require("../../controller/authController");
 const {
   registerValidation,
   loginValidation,
@@ -16,13 +10,14 @@ const {
 } = require("../../middleware/validationMiddleware");
 const { loginRateLimiter, registerRateLimiter, otpRateLimiter } = require("../../middleware/rateLimiter");
 const { verifyAuthToken } = require("../../middleware/authMiddleware");
+const { asyncHandler } = require("../../middleware/asyncHandler");
 
 //---------------------
 
-router.post("/register", registerValidation, registerRateLimiter, registerController);
-router.post("/login", loginValidation, loginRateLimiter, loginController);
-router.post("/request-verification", emailValidation, otpRateLimiter, requestVerificationController);
-router.post("/verify-email", emailValidation, otpValidation, verifyEmailController);
-router.post("/logout", verifyAuthToken, logoutController);
+router.post("/register", registerValidation, registerRateLimiter, asyncHandler(register));
+router.post("/login", loginValidation, loginRateLimiter, login);
+router.post("/request-verification", emailValidation, otpRateLimiter, asyncHandler(requestVerification));
+router.post("/verify-email", emailValidation, otpValidation, asyncHandler(verifyEmail));
+router.post("/logout", verifyAuthToken, asyncHandler(logout));
 
 module.exports = router;

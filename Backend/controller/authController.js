@@ -30,7 +30,7 @@ const path = require("path");
 jwt => header payload signature
 */
 
-async function registerController(req, res) {
+async function register(req, res) {
   const { firstName, lastName, email, password } = req.body;
   const existingUser = await userSchema.findOne({ email });
   if (existingUser) throw createError(409, "Email is already registered");
@@ -46,7 +46,7 @@ async function registerController(req, res) {
   res.status(201).json({ success: true, message: "Account created! Check your email to verify.", data: user });
 }
 
-async function loginController(req, res) {
+async function login(req, res) {
   const { email, password } = req.body;
   const user = await userSchema.findOne({ email, isActive: true }).select("+password");
   if (!user) throw createError(404, "This email is not registered with us.", "login");
@@ -75,7 +75,7 @@ async function loginController(req, res) {
   res.status(200).json({ success: true, message: "Login successful", data: user });
 }
 
-async function requestVerificationController(req, res) {
+async function requestVerification(req, res) {
   const { email } = req.body;
 
   const user = await userSchema.findOne({ email }).select("+otp +otpExpiry +lastOtpRequest +lockedUntil");
@@ -121,15 +121,12 @@ async function requestVerificationController(req, res) {
   res.status(200).json({ success: true, message: "OTP sent to your email. Valid for 2 minutes." });
 }
 
-async function verifyEmailController(req, res) {
+async function verifyEmail(req, res) {
   const { email, otp } = req.body;
 
   const user = await userSchema.findOne({ email }).select("+otp +otpExpiry +otpAttempts +lockedUntil ");
-
   if (!user) throw createError(404, "Email is not registered", "verify OTP.");
-
   if (user.verified) throw createError(400, "This email is already verified", "verify OTP.");
-
   if (user.lockedUntil && user.lockedUntil > new Date()) {
     const minLeft = Math.ceil((user.lockedUntil - new Date()) / 60000);
     // 403 -> forbidden
@@ -172,7 +169,7 @@ async function verifyEmailController(req, res) {
   res.status(200).json({ success: true, message: "User verified successfully. You can now login." });
 }
 
-async function logoutController(req, res) {
+async function logout(req, res) {
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -187,9 +184,9 @@ async function logoutController(req, res) {
 }
 
 module.exports = {
-  registerController,
-  loginController,
-  requestVerificationController,
-  verifyEmailController,
-  logoutController,
+  register,
+  login,
+  requestVerification,
+  verifyEmail,
+  logout,
 };
