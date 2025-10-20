@@ -1,0 +1,7 @@
+NODE_ENV=development
+DATABASE_URL=*************************
+EMAIL_APP_PASSWORD =****************
+BASE_URL=/api/v1
+JWT_SECRET=***********
+JWT_EXPIRES_IN=1hr
+PORT=****

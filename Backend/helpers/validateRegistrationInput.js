@@ -1,6 +1,6 @@
 const regex = require("./regex");
 
-function validatreRegisterInput({ firstName, lastName, email, password }) {
+function validateRegistrationInput({ firstName, lastName, email, password }) {
   let errors = {};
 
   // collect validation errors
@@ -19,4 +19,4 @@ function validatreRegisterInput({ firstName, lastName, email, password }) {
   return errors;
 }
 
-module.exports = validatreRegisterInput;
+module.exports = validateRegistrationInput;

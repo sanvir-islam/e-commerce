@@ -11,7 +11,7 @@ function validatePassword(password) {
   if (!/\d/.test(password)) return "Password must contain at least one number.";
   if (!/[!@#$%^&*]/.test(password)) return "Password must contain at least one special character (!@#$%^&*).";
 
-  return null;
+  return undefined;
 }
 
 module.exports = { isValidEmail, validatePassword };

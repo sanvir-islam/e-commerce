@@ -9,8 +9,6 @@ async function sendVerificationMail(email, otp) {
       subject: "Verification email from Zenith",
       html: verificationEmailTemplate(otp),
     });
-
-    console.log("Message sent to ", email);
   } catch (err) {
     throw new Error("Error in sending mail");
   }

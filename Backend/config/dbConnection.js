@@ -6,6 +6,7 @@ function dbConnection() {
     .then(() => console.log("MongoDB Connected"))
     .catch((err) => {
       console.log("server error" + err);
+      process.exit(1);
     });
 }
 

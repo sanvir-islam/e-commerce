@@ -1,4 +1,1 @@
-function trimString(str) {
-  return str?.trim() || "";
-}
-module.exports = trimString;
+module.exports = (str) => (typeof str === "string" ? str?.trim() : str);
