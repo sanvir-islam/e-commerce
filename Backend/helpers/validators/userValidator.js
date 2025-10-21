@@ -78,20 +78,20 @@ exports.validateRegistration = (data) => {
   };
 };
 
-exports.validateLogin = ({ email, password }) => {
+exports.validateLogin = (data) => {
   const errors = {};
 
-  const emailError = validators.validateEmail(email);
+  const emailError = validators.validateEmail(data.email);
   if (emailError) errors.email = emailError;
 
-  if (!password) errors.password = "Password is required";
+  if (!data.password) errors.password = "Password is required";
 
   return {
     errors,
     hasError: Object.keys(errors).length > 0,
     sanitizedData: {
-      email: email?.trim().toLowerCase(),
-      password,
+      email: data.email?.trim().toLowerCase(),
+      password: data.password,
     },
   };
 };

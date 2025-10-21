@@ -18,7 +18,6 @@ exports.registerValidation = (req, res, next) => {
   req.body = sanitizedData;
   next();
 };
-
 exports.loginValidation = (req, res, next) => {
   const { errors, hasError, sanitizedData } = validateLogin(req.body);
   if (hasError) {
@@ -29,7 +28,7 @@ exports.loginValidation = (req, res, next) => {
     });
   }
 
-  req.body.email = sanitizedData.email;
+  req.body = sanitizedData;
   next();
 };
 
@@ -45,7 +44,6 @@ exports.emailValidation = (req, res, next) => {
   req.body.email = sanitizedEmail;
   next();
 };
-
 exports.otpValidation = (req, res, next) => {
   const { error, hasError, sanitizedOTP } = validateOTP(req.body.otp);
   if (hasError) {
